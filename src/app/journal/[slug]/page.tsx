@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import Navbar from "@/components/layout/navbar";
@@ -14,6 +15,60 @@ type Props = {
     slug: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const post =
+    await getBlogBySlug(slug);
+
+  if (!post) {
+    return {};
+  }
+
+  const image =
+    `https://res.cloudinary.com/dqdvlpsi7/image/upload/f_auto,q_auto/${post.image}`;
+
+  return {
+    title: post.title,
+
+    description:
+      post.excerpt,
+
+    openGraph: {
+      title: post.title,
+
+      description:
+        post.excerpt,
+
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+
+    twitter: {
+      card:
+        "summary_large_image",
+
+      title: post.title,
+
+      description:
+        post.excerpt,
+
+      images: [image],
+    },
+  };
+}
 
 export async function generateStaticParams() {
   const blogs =

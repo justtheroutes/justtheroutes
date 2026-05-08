@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import Navbar from "@/components/layout/navbar";
@@ -16,7 +17,59 @@ type Props = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { slug } = await params;
 
+  const destination =
+    await getDestinationBySlug(slug);
+
+  if (!destination) {
+    return {};
+  }
+
+  const title =
+    `${destination.name} Travel Guide`;
+
+  const description =
+    destination.seo_description ||
+    destination.description;
+
+  const image =
+    `https://res.cloudinary.com/dqdvlpsi7/image/upload/f_auto,q_auto/${destination.image}`;
+
+  return {
+    title,
+
+    description,
+
+    openGraph: {
+      title,
+
+      description,
+
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+
+    twitter: {
+      card:
+        "summary_large_image",
+
+      title,
+
+      description,
+
+      images: [image],
+    },
+  };
+}
 
 export default async function DestinationPage({
   params,
@@ -76,30 +129,91 @@ export default async function DestinationPage({
 
       </section>
 
-      {/* CONTENT */}
-      <section className="section-padding">
+      {/* OVERVIEW */}
+<section className="section-padding">
 
-        <Container>
+  <Container>
 
-          <div className="max-w-4xl">
+    <div className="max-w-5xl">
 
-            <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-6">
-              About The Destination
-            </p>
+      <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-6">
+        Destination Overview
+      </p>
 
-            <h2 className="text-5xl leading-tight mb-8 text-[#222222]">
-              Discover {destination.name}
-            </h2>
+      <h2 className="text-5xl md:text-7xl leading-none mb-10 text-[#222222]">
+        Discover {destination.name}
+      </h2>
 
-            <p className="text-xl leading-relaxed text-[#222222]/70">
-              {destination.description}
-            </p>
+      <p className="text-xl leading-loose text-[#222222]/70 max-w-4xl">
+        {destination.description}
+      </p>
 
-          </div>
+    </div>
 
-        </Container>
+  </Container>
 
-      </section>
+</section>
+
+{/* INFO GRID */}
+<section className="pb-32">
+
+  <Container>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <div className="bg-white rounded-[2rem] p-10 border border-black/5">
+
+        <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/60 mb-5">
+          Best Time To Visit
+        </p>
+
+        <p className="text-xl leading-loose text-[#222222]/75">
+          {destination.best_time}
+        </p>
+
+      </div>
+
+      <div className="bg-white rounded-[2rem] p-10 border border-black/5">
+
+        <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/60 mb-5">
+          Ideal Trip Duration
+        </p>
+
+        <p className="text-xl leading-loose text-[#222222]/75">
+          {destination.trip_duration}
+        </p>
+
+      </div>
+
+      <div className="bg-white rounded-[2rem] p-10 border border-black/5">
+
+        <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/60 mb-5">
+          How To Reach
+        </p>
+
+        <p className="text-xl leading-loose text-[#222222]/75">
+          {destination.how_to_reach}
+        </p>
+
+      </div>
+
+      <div className="bg-[#1F3A32] text-white rounded-[2rem] p-10">
+
+        <p className="uppercase tracking-[0.3em] text-sm text-white/60 mb-5">
+          Highlights
+        </p>
+
+        <p className="text-xl leading-loose text-white/80">
+          {destination.highlights}
+        </p>
+
+      </div>
+
+    </div>
+
+  </Container>
+
+</section>
 
     </main>
   );

@@ -37,3 +37,21 @@ export async function getBlogBySlug(
 
   return data;
 }
+
+export async function getAllBlogs() {
+  const { data, error } =
+    await supabaseClient
+      .from("blogs")
+      .select("*")
+      .order("created_at", {
+        ascending: false,
+      });
+
+  if (error) {
+    console.error(error);
+
+    return [];
+  }
+
+  return data;
+}

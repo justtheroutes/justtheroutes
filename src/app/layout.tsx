@@ -26,7 +26,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: seoConfig.title,
+  title: {
+  default: seoConfig.title,
+
+  template:
+    "%s | JustTheRoutes",
+},
 
   description: seoConfig.description,
 
@@ -34,8 +39,37 @@ export const metadata: Metadata = {
 
   metadataBase: new URL(seoConfig.url),
 
+  applicationName:
+  "JustTheRoutes",
+
+robots: {
+  index: true,
+  follow: true,
+
+  googleBot: {
+    index: true,
+    follow: true,
+
+    "max-video-preview": -1,
+
+    "max-image-preview":
+      "large",
+
+    "max-snippet": -1,
+  },
+},
+
+ icons: {
+    icon: "/icon.png",
+  },
+
   openGraph: {
-    title: seoConfig.title,
+    title: {
+  default: seoConfig.title,
+
+  template:
+    "%s | JustTheRoutes",
+},
 
     description: seoConfig.description,
 
@@ -59,7 +93,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: seoConfig.title,
+    title: {
+  default: seoConfig.title,
+
+  template:
+    "%s | JustTheRoutes",
+},
 
     description: seoConfig.description,
 

@@ -32,7 +32,7 @@ export default function CloudinaryImage({
     process.env
       .NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
-  const imageUrl = `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${src}`;
+  const imageUrl = `https://res.cloudinary.com/dqdvlpsi7/image/upload/f_auto,q_auto/${src}`;
 
   return (
     <Image

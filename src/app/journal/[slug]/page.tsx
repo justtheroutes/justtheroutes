@@ -87,6 +87,9 @@ export default async function BlogPage({
   const blog =
     await getBlogBySlug(slug);
 
+const relatedBlogs =
+  await getPublishedBlogs();
+
   if (!blog) {
     notFound();
   }
@@ -188,6 +191,68 @@ export default async function BlogPage({
         </Container>
 
       </section>
+
+      <section className="py-24 bg-white">
+
+  <Container>
+
+    <div className="mb-14">
+
+      <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-4">
+        Continue Reading
+      </p>
+
+      <h2 className="text-5xl text-[#222222]">
+        Related Articles
+      </h2>
+
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      {relatedBlogs
+        .filter(
+          (item: any) =>
+            item.slug !== blog.slug
+        )
+        .slice(0, 3)
+        .map((item: any) => (
+
+          <a
+            key={item.id}
+            href={`/journal/${item.slug}`}
+            className="group"
+          >
+
+            <div className="relative h-[320px] rounded-[2rem] overflow-hidden mb-5">
+
+              <CloudinaryImage
+                src={item.cover_image}
+                alt={item.title}
+                fill
+                className="object-cover group-hover:scale-105 transition duration-700"
+              />
+
+              <div className="absolute inset-0 bg-black/30" />
+
+            </div>
+
+            <h3 className="text-2xl text-[#222222] mb-2 leading-snug">
+              {item.title}
+            </h3>
+
+            <p className="text-[#222222]/70 line-clamp-2">
+              {item.excerpt}
+            </p>
+
+          </a>
+        ))}
+
+    </div>
+
+  </Container>
+
+</section>
 
     </main>
   );

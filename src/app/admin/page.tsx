@@ -1,19 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import { useRouter } from "next/navigation";
 
-import { supabaseClient } from "@/lib/supabase-client";
 import AdminNavbar from "@/components/dashboard/admin-navbar";
+
+import { supabaseClient } from "@/lib/supabase-client";
 
 type Inquiry = {
   id: string;
+
+  inquiry_number: string;
+
   name: string;
-  phone: string;
-  destination: string;
-  travelers: string;
-  travel_date: string;
-  message: string;
+
+  whatsapp: string;
+
+  travel_month: string;
+
+  travellers: string;
+
+  trip_type: string;
+
+  notes: string;
+
+  status: string;
+
+  created_at: string;
 };
 
 export default function AdminPage() {
@@ -25,6 +42,9 @@ export default function AdminPage() {
   const [inquiries, setInquiries] =
     useState<Inquiry[]>([]);
 
+  const [filter, setFilter] =
+    useState("All");
+
   useEffect(() => {
     checkSession();
   }, []);
@@ -34,8 +54,6 @@ export default function AdminPage() {
       data: { session },
     } =
       await supabaseClient.auth.getSession();
-
-    console.log("SESSION:", session);
 
     if (!session) {
       router.push("/login");
@@ -50,11 +68,10 @@ export default function AdminPage() {
     const { data, error } =
       await supabaseClient
         .from("inquiries")
-        .select("*");
-
-    console.log("DATA:", data);
-
-    console.log("ERROR:", error);
+        .select("*")
+        .order("created_at", {
+          ascending: false,
+        });
 
     if (error) {
       alert(error.message);
@@ -65,145 +82,274 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    await supabaseClient.auth.signOut();
+  const updateStatus =
+    async (
+      id: string,
+      status: string
+    ) => {
+      await supabaseClient
+        .from("inquiries")
+        .update({
+          status,
+        })
+        .eq("id", id);
 
-    router.push("/login");
-  };
+      fetchInquiries();
+    };
+
+  const handleLogout =
+    async () => {
+      await supabaseClient.auth.signOut();
+
+      router.push("/login");
+    };
+
+  const filteredInquiries =
+    filter === "All"
+      ? inquiries
+      : inquiries.filter(
+          (item) =>
+            item.status === filter
+        );
 
   if (loading) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-[#F8F7F3]">
+
         <p className="text-lg text-black/60">
           Loading Dashboard...
         </p>
+
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#F8F7F3] p-6 md:p-10">
-        <AdminNavbar />
+    <main className="min-h-screen bg-[#F8F7F3] p-4 md:p-8">
 
-      <div className="max-w-7xl mx-auto pt-10">
+      <AdminNavbar />
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
+      <div className="max-w-[1600px] mx-auto pt-10">
+
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-10">
 
           <div>
 
-            <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-4">
+            <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-3">
               JustTheRoutes CRM
             </p>
 
-            <h1 className="text-5xl text-[#222222] mb-4">
+            <h1 className="text-4xl md:text-5xl text-[#222222] mb-3">
               Inquiry Dashboard
             </h1>
 
-            <p className="text-[#222222]/70 text-lg">
-              Manage incoming travel inquiries.
+            <p className="text-[#222222]/70">
+              Manage and track incoming travel leads.
             </p>
 
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="bg-[#1F3A32] text-white px-6 py-3 rounded-full hover:opacity-90 transition"
-          >
-            Logout
-          </button>
+          <div className="flex flex-wrap items-center gap-3 max-w-[700px] justify-start lg:justify-end">
+
+            {[
+            "All",
+            "New",
+            "Attempted",
+            "Contacted",
+            "Planning",
+            "Negotiating",
+            "Confirmed",
+            "Dropped",
+            "Dead",
+            "Closed",
+            ].map((status) => (
+              <button
+                key={status}
+                onClick={() =>
+                  setFilter(status)
+                }
+                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition border ${
+                filter === status
+                    ? "bg-[#1F3A32] text-white border-[#1F3A32]"
+                    : "bg-white text-[#222222]/70 border-black/10 hover:border-[#1F3A32]/30"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+
+            <button
+              onClick={handleLogout}
+              className="bg-black text-white px-5 py-2.5 rounded-full text-sm"
+            >
+              Logout
+            </button>
+
+          </div>
 
         </div>
 
-        {inquiries.length === 0 ? (
-          <div className="bg-white rounded-[2rem] p-10 text-center luxury-shadow">
+        <div className="overflow-x-auto bg-white rounded-[2rem] border border-black/5">
 
-            <h2 className="text-2xl mb-4">
-              No inquiries found
-            </h2>
+          <table className="w-full min-w-[1200px]">
 
-            <p className="text-black/60">
-              No rows are currently being returned from Supabase.
-            </p>
+            <thead className="border-b border-black/5 bg-[#F8F7F3]">
 
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <tr className="text-left">
 
-            {inquiries.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-[2rem] p-8 luxury-shadow border border-black/5"
-              >
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Inquiry ID
+                </th>
 
-                <div className="space-y-5">
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Traveler
+                </th>
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Traveler
-                    </p>
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  WhatsApp
+                </th>
 
-                    <h2 className="text-2xl">
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Month
+                </th>
+
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Travellers
+                </th>
+
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Trip Type
+                </th>
+
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Notes
+                </th>
+
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Status
+                </th>
+
+                <th className="px-6 py-5 text-sm font-medium text-black/50">
+                  Created
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {filteredInquiries.map(
+                (item) => (
+                  <tr
+                    key={item.id}
+                    className="border-b border-black/5 hover:bg-[#F8F7F3]/60 transition"
+                  >
+
+                    <td className="px-6 py-5 font-medium text-[#1F3A32] whitespace-nowrap">
+                      {item.inquiry_number}
+                    </td>
+
+                    <td className="px-6 py-5 whitespace-nowrap">
                       {item.name}
-                    </h2>
-                  </div>
+                    </td>
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Phone
-                    </p>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      {item.whatsapp}
+                    </td>
 
-                    <p className="text-lg">
-                      {item.phone}
-                    </p>
-                  </div>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      {item.travel_month}
+                    </td>
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Destination
-                    </p>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      {item.travellers}
+                    </td>
 
-                    <p className="text-lg">
-                      {item.destination}
-                    </p>
-                  </div>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      {item.trip_type}
+                    </td>
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Travelers
-                    </p>
+                    <td className="px-6 py-5 max-w-[300px] text-black/70">
+                      {item.notes ||
+                        "—"}
+                    </td>
 
-                    <p className="text-lg">
-                      {item.travelers}
-                    </p>
-                  </div>
+                    <td className="px-6 py-5">
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Travel Date
-                    </p>
+                      <select
+                        value={
+                          item.status
+                        }
+                        onChange={(
+                          e
+                        ) =>
+                          updateStatus(
+                            item.id,
+                            e.target
+                              .value
+                          )
+                        }
+                        className="border border-black/10 rounded-full px-4 py-2 bg-white"
+                      >
 
-                    <p className="text-lg">
-                      {item.travel_date}
-                    </p>
-                  </div>
+                        <option>
+                          New
+                        </option>
 
-                  <div>
-                    <p className="text-sm text-black/50 mb-1">
-                      Preferences
-                    </p>
+                        <option>
+                          Attempted
+                        </option>
+                        
+                        <option>
+                          Contacted
+                        </option>
 
-                    <p className="text-black/70 leading-relaxed">
-                      {item.message || "No message"}
-                    </p>
-                  </div>
+                        <option>
+                          Planning
+                        </option>
 
-                </div>
+                        <option>
+                          Negotiating
+                        </option>
+                        
+                        <option>
+                          Confirmed
+                        </option>
 
-              </div>
-            ))}
+                        <option>
+                          Dropped
+                        </option>
+                        
+                        <option>
+                          Dead
+                        </option>
 
-          </div>
-        )}
+                        <option>
+                          Closed
+                        </option>
+
+                      </select>
+
+                    </td>
+
+                    <td className="px-6 py-5 whitespace-nowrap text-black/60">
+
+                      {new Date(
+                        item.created_at
+                      ).toLocaleDateString()}
+
+                    </td>
+
+                  </tr>
+                )
+              )}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 

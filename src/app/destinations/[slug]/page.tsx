@@ -9,6 +9,7 @@ import DestinationCTA from "@/components/ui/destination-cta";
 
 import {
   getDestinationBySlug,
+  getAllDestinations,
 } from "@/services/destination-service";
 
 type Props = {
@@ -78,6 +79,9 @@ export default async function DestinationPage({
 
   const destination =
     await getDestinationBySlug(slug);
+
+    const relatedDestinations =
+  await getAllDestinations();
 
   if (!destination) {
     notFound();
@@ -215,6 +219,71 @@ export default async function DestinationPage({
 
 </section>
 
+{/* RELATED DESTINATIONS */}
+<section className="py-24 bg-white">
+
+  <Container>
+
+    <div className="mb-14">
+
+      <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-4">
+        Explore More
+      </p>
+
+      <h2 className="text-5xl text-[#222222]">
+        More Destinations
+      </h2>
+
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      {relatedDestinations
+        .filter(
+          (item: any) =>
+            item.slug !==
+            destination.slug
+        )
+        .slice(0, 3)
+        .map((item: any) => (
+
+          <a
+            key={item.id}
+            href={`/destinations/${item.slug}`}
+            className="group"
+          >
+
+            <div className="relative h-[320px] rounded-[2rem] overflow-hidden mb-5">
+
+              <CloudinaryImage
+                src={item.image}
+                alt={item.name}
+                fill
+                className="object-cover group-hover:scale-105 transition duration-700"
+              />
+
+              <div className="absolute inset-0 bg-black/30" />
+
+            </div>
+
+            <h3 className="text-2xl text-[#222222] mb-2">
+              {item.name}
+            </h3>
+
+            <p className="text-[#222222]/70">
+              {item.tagline}
+            </p>
+
+          </a>
+        ))}
+
+    </div>
+
+  </Container>
+
+</section>
+
     </main>
+    
   );
 }

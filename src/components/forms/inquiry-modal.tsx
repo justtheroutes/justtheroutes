@@ -42,49 +42,103 @@ export default function InquiryModal() {
     }));
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
+const handleSubmit = async (
+  e: React.FormEvent
+) => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const { error } =
-        await supabaseClient
-          .from("inquiries")
-          .insert(form);
+    // GET TOTAL INQUIRY COUNT
+    const {
+    count,
+    } = await supabaseClient
+    .from("inquiries")
+    .select("*", {
+        count: "exact",
+        head: true,
+    });
 
-      if (error) {
-        alert(error.message);
+    const inquiryNumber =
+    `JTR-${1001 + (count || 0)}`;
 
-        return;
-      }
+    const { error } =
+    await supabaseClient
+        .from("inquiries")
+        .insert({
+        ...form,
 
-      alert(
-        "Inquiry submitted successfully."
-      );
+        inquiry_number:
+            inquiryNumber,
+        });
 
-      inquiryModal.onClose();
+    if (error) {
+      alert(error.message);
 
-      setForm({
-        name: "",
-        whatsapp: "",
-        travel_month: "",
-        travellers: "",
-        trip_type: "",
-        notes: "",
-      });
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        "Something went wrong."
-      );
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
+
+    // SEND EMAIL NOTIFICATION
+    await fetch(
+      "/api/send-inquiry-email",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body: JSON.stringify({
+          inquiry_number:
+            inquiryNumber,
+  
+            name: form.name,
+
+          phone:
+            form.whatsapp,
+
+          travel_month:
+            form.travel_month,
+
+          travelers:
+            form.travellers,
+
+          trip_type:
+            form.trip_type,
+
+          notes: form.notes,
+        }),
+      }
+    );
+
+    alert(
+      "Inquiry submitted successfully."
+    );
+
+    inquiryModal.onClose();
+
+    setForm({
+      name: "",
+      whatsapp: "",
+      travel_month: "",
+      travellers: "",
+      trip_type: "",
+      notes: "",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Something went wrong."
+    );
+
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!inquiryModal.isOpen) {
     return null;

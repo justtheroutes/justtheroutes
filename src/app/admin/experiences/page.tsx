@@ -1,52 +1,53 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import Container from "@/components/layout/container";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import AdminNavbar from "@/components/dashboard/admin-navbar";
 
+import Container from "@/components/layout/container";
+
 import { supabaseClient } from "@/lib/supabase-client";
 
-export default function AdminDestinationsPage() {
+export default function AdminExperiencesPage() {
   const [loading, setLoading] =
     useState(false);
 
   const [editingId, setEditingId] =
     useState<string | null>(null);
 
-  const [destinations, setDestinations] =
+  const [experiences, setExperiences] =
     useState<any[]>([]);
 
   const [form, setForm] =
     useState({
-      name: "",
+      title: "",
       slug: "",
       tagline: "",
       description: "",
       image: "",
-      best_time: "",
-      trip_duration: "",
-      how_to_reach: "",
-      highlights: "",
+      seo_title: "",
       seo_description: "",
+      highlights: "",
     });
 
-  const fetchDestinations =
+  const fetchExperiences =
     async () => {
       const { data } =
         await supabaseClient
-          .from("destinations")
+          .from("experiences")
           .select("*")
           .order("created_at", {
             ascending: false,
           });
 
-      setDestinations(data || []);
+      setExperiences(data || []);
     };
 
   useEffect(() => {
-    fetchDestinations();
+    fetchExperiences();
   }, []);
 
   const handleChange = (
@@ -55,7 +56,8 @@ export default function AdminDestinationsPage() {
       HTMLTextAreaElement
     >
   ) => {
-    const { name, value } = e.target;
+    const { name, value } =
+      e.target;
 
     setForm((prev) => ({
       ...prev,
@@ -65,16 +67,14 @@ export default function AdminDestinationsPage() {
 
   const resetForm = () => {
     setForm({
-      name: "",
+      title: "",
       slug: "",
       tagline: "",
       description: "",
       image: "",
-      best_time: "",
-      trip_duration: "",
-      how_to_reach: "",
-      highlights: "",
+      seo_title: "",
       seo_description: "",
+      highlights: "",
     });
 
     setEditingId(null);
@@ -93,7 +93,7 @@ export default function AdminDestinationsPage() {
       if (editingId) {
         const response =
           await supabaseClient
-            .from("destinations")
+            .from("experiences")
             .update(form)
             .eq("id", editingId);
 
@@ -102,7 +102,7 @@ export default function AdminDestinationsPage() {
       } else {
         const response =
           await supabaseClient
-            .from("destinations")
+            .from("experiences")
             .insert({
               ...form,
               featured: true,
@@ -119,13 +119,13 @@ export default function AdminDestinationsPage() {
 
       alert(
         editingId
-          ? "Destination updated."
-          : "Destination created."
+          ? "Experience updated."
+          : "Experience created."
       );
 
       resetForm();
 
-      fetchDestinations();
+      fetchExperiences();
 
     } catch (error) {
       console.error(error);
@@ -138,25 +138,6 @@ export default function AdminDestinationsPage() {
       setLoading(false);
     }
   };
-
-  const deleteDestination =
-    async (id: string) => {
-      const confirmed =
-        confirm(
-          "Delete this destination?"
-        );
-
-      if (!confirmed) {
-        return;
-      }
-
-      await supabaseClient
-        .from("destinations")
-        .delete()
-        .eq("id", id);
-
-      fetchDestinations();
-    };
 
   return (
     <main className="bg-[#F8F7F3] min-h-screen">
@@ -176,7 +157,7 @@ export default function AdminDestinationsPage() {
               </p>
 
               <h1 className="text-5xl leading-none text-[#222222]">
-                Manage Destinations
+                Manage Experiences
               </h1>
 
             </div>
@@ -188,9 +169,9 @@ export default function AdminDestinationsPage() {
 
               <input
                 type="text"
-                name="name"
-                placeholder="Destination Name"
-                value={form.name}
+                name="title"
+                placeholder="Experience title"
+                value={form.title}
                 onChange={handleChange}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
@@ -199,7 +180,7 @@ export default function AdminDestinationsPage() {
               <input
                 type="text"
                 name="slug"
-                placeholder="destination-slug"
+                placeholder="experience-slug"
                 value={form.slug}
                 onChange={handleChange}
                 required
@@ -218,7 +199,7 @@ export default function AdminDestinationsPage() {
 
               <textarea
                 name="description"
-                placeholder="Destination description"
+                placeholder="Experience description"
                 value={form.description}
                 onChange={handleChange}
                 rows={5}
@@ -227,43 +208,23 @@ export default function AdminDestinationsPage() {
               />
 
               <textarea
-                name="best_time"
-                placeholder="Best time to visit"
-                value={form.best_time}
+                name="highlights"
+                placeholder="Experience highlights"
+                value={form.highlights}
                 onChange={handleChange}
-                rows={3}
+                rows={4}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
               />
 
               <input
                 type="text"
-                name="trip_duration"
-                placeholder="Ideal trip duration"
-                value={form.trip_duration}
+                name="seo_title"
+                placeholder="SEO title"
+                value={form.seo_title}
                 onChange={handleChange}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
-              />
-
-              <textarea
-                name="how_to_reach"
-                placeholder="How to reach"
-                value={form.how_to_reach}
-                onChange={handleChange}
-                rows={3}
-                required
-                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
-              />
-
-              <textarea
-                name="highlights"
-                placeholder="Destination highlights"
-                value={form.highlights}
-                onChange={handleChange}
-                rows={3}
-                required
-                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
               />
 
               <textarea
@@ -271,7 +232,7 @@ export default function AdminDestinationsPage() {
                 placeholder="SEO description"
                 value={form.seo_description}
                 onChange={handleChange}
-                rows={3}
+                rows={4}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
               />
@@ -286,99 +247,73 @@ export default function AdminDestinationsPage() {
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
               />
 
-              <div className="flex flex-wrap gap-4">
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-[#1F3A32] text-white rounded-full px-8 py-4 hover:opacity-90 transition disabled:opacity-50"
-                >
-                  {loading
-                    ? editingId
-                      ? "Updating..."
-                      : "Creating..."
-                    : editingId
-                    ? "Update Destination"
-                    : "Create Destination"}
-                </button>
-
-                {editingId && (
-                  <button
-                    type="button"
-                    onClick={resetForm}
-                    className="bg-black/5 text-[#222222] rounded-full px-8 py-4 hover:bg-black/10 transition"
-                  >
-                    Cancel Editing
-                  </button>
-                )}
-
-              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-[#1F3A32] text-white rounded-full px-8 py-4"
+              >
+                {loading
+                  ? "Saving..."
+                  : editingId
+                  ? "Update Experience"
+                  : "Create Experience"}
+              </button>
 
             </form>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {destinations.map(
-                (destination) => (
+              {experiences.map(
+                (item) => (
                   <div
-                    key={destination.id}
-                    className="bg-white rounded-[2rem] p-8 luxury-shadow border border-black/5"
+                    key={item.id}
+                    className="bg-white rounded-[2rem] p-8 luxury-shadow"
                   >
 
-                    <div className="mb-6">
+                    <h2 className="text-3xl mb-3 text-[#222222]">
+                      {item.title}
+                    </h2>
 
-                      <h2 className="text-3xl mb-3 text-[#222222]">
-                        {destination.name}
-                      </h2>
+                    <p className="text-[#222222]/70 mb-4">
+                      {item.tagline}
+                    </p>
 
-                      <p className="text-[#222222]/70 mb-4">
-                        {destination.tagline}
-                      </p>
+                    <p className="text-sm text-black/40 mb-6">
+                      /experiences/{item.slug}
+                    </p>
 
-                      <p className="text-sm text-black/40">
-                        /destinations/{destination.slug}
-                      </p>
-
-                    </div>
-
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex gap-3">
 
                       <button
                         onClick={() => {
                           setEditingId(
-                            destination.id
+                            item.id
                           );
 
                           setForm({
-                            name:
-                              destination.name || "",
+                            title:
+                              item.title || "",
 
                             slug:
-                              destination.slug || "",
+                              item.slug || "",
 
                             tagline:
-                              destination.tagline || "",
+                              item.tagline || "",
 
                             description:
-                              destination.description || "",
+                              item.description || "",
 
                             image:
-                              destination.image || "",
+                              item.image || "",
 
-                            best_time:
-                              destination.best_time || "",
-
-                            trip_duration:
-                              destination.trip_duration || "",
-
-                            how_to_reach:
-                              destination.how_to_reach || "",
-
-                            highlights:
-                              destination.highlights || "",
+                            seo_title:
+                              item.seo_title || "",
 
                             seo_description:
-                              destination.seo_description || "",
+                              item.seo_description || "",
+
+                            highlights:
+                              item.highlights || "",
                           });
 
                           window.scrollTo({
@@ -387,18 +322,37 @@ export default function AdminDestinationsPage() {
                               "smooth",
                           });
                         }}
-                        className="bg-[#1F3A32] text-white px-5 py-2.5 rounded-full text-sm hover:opacity-90 transition"
+                        className="bg-[#1F3A32] text-white px-5 py-2 rounded-full text-sm"
                       >
                         Edit
                       </button>
 
                       <button
-                        onClick={() =>
-                          deleteDestination(
-                            destination.id
-                          )
-                        }
-                        className="bg-red-500 text-white px-5 py-2.5 rounded-full text-sm hover:opacity-90 transition"
+                        onClick={async () => {
+                          const confirmed =
+                            confirm(
+                              "Delete this experience?"
+                            );
+
+                          if (
+                            !confirmed
+                          ) {
+                            return;
+                          }
+
+                          await supabaseClient
+                            .from(
+                              "experiences"
+                            )
+                            .delete()
+                            .eq(
+                              "id",
+                              item.id
+                            );
+
+                          fetchExperiences();
+                        }}
+                        className="bg-red-500 text-white px-5 py-2 rounded-full text-sm"
                       >
                         Delete
                       </button>

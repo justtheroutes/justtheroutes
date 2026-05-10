@@ -44,3 +44,25 @@ h6 {
 .luxury-shadow {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
+
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee-content {
+  display: inline-flex;
+  min-width: 200%;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

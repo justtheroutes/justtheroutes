@@ -15,6 +15,10 @@ import GoogleAnalytics from "@/components/analytics/google-analytics";
 
 import Footer from "@/components/layout/footer";
 
+import Topbar from "@/components/layout/topbar";
+
+import FloatingSocials from "@/components/ui/floating-socials";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -121,11 +125,12 @@ export default function RootLayout({
       >
         <GoogleAnalytics />
         <SmoothScroll>
+          <Topbar />
 
           {children}
 
           <InquiryModal />
-          <WhatsappButton />
+          <FloatingSocials />
           <Footer />
 
         </SmoothScroll>

@@ -11,44 +11,46 @@ import Container from "@/components/layout/container";
 
 import { supabaseClient } from "@/lib/supabase-client";
 
-export default function AdminBlogsPage() {
+export default function AdminStaysPage() {
   const [loading, setLoading] =
     useState(false);
 
   const [editingId, setEditingId] =
     useState<string | null>(null);
 
-  const [blogs, setBlogs] =
+  const [stays, setStays] =
     useState<any[]>([]);
 
   const [form, setForm] =
     useState({
       title: "",
       slug: "",
-      excerpt: "",
-      content: "",
-      cover_image: "",
+      tagline: "",
+      description: "",
+      image: "",
+      location: "",
+      category: "",
+      amenities: "",
+      starting_price: "",
       seo_title: "",
       seo_description: "",
-      keywords: "",
-      published: true,
     });
 
-  const fetchBlogs =
+  const fetchStays =
     async () => {
       const { data } =
         await supabaseClient
-          .from("blog_posts")
+          .from("stays")
           .select("*")
           .order("created_at", {
             ascending: false,
           });
 
-      setBlogs(data || []);
+      setStays(data || []);
     };
 
   useEffect(() => {
-    fetchBlogs();
+    fetchStays();
   }, []);
 
   const handleChange = (
@@ -70,13 +72,15 @@ export default function AdminBlogsPage() {
     setForm({
       title: "",
       slug: "",
-      excerpt: "",
-      content: "",
-      cover_image: "",
+      tagline: "",
+      description: "",
+      image: "",
+      location: "",
+      category: "",
+      amenities: "",
+      starting_price: "",
       seo_title: "",
       seo_description: "",
-      keywords: "",
-      published: true,
     });
 
     setEditingId(null);
@@ -90,24 +94,13 @@ export default function AdminBlogsPage() {
     try {
       setLoading(true);
 
-      const payload = {
-        ...form,
-
-        keywords:
-          form.keywords
-            .split(",")
-            .map((item) =>
-              item.trim()
-            ),
-      };
-
       let error = null;
 
       if (editingId) {
         const response =
           await supabaseClient
-            .from("blog_posts")
-            .update(payload)
+            .from("stays")
+            .update(form)
             .eq("id", editingId);
 
         error = response.error;
@@ -115,8 +108,11 @@ export default function AdminBlogsPage() {
       } else {
         const response =
           await supabaseClient
-            .from("blog_posts")
-            .insert(payload);
+            .from("stays")
+            .insert({
+              ...form,
+              featured: true,
+            });
 
         error = response.error;
       }
@@ -129,13 +125,13 @@ export default function AdminBlogsPage() {
 
       alert(
         editingId
-          ? "Article updated."
-          : "Article published."
+          ? "Stay updated."
+          : "Stay created."
       );
 
       resetForm();
 
-      fetchBlogs();
+      fetchStays();
 
     } catch (error) {
       console.error(error);
@@ -149,11 +145,11 @@ export default function AdminBlogsPage() {
     }
   };
 
-  const deleteBlog =
+  const deleteStay =
     async (id: string) => {
       const confirmed =
         confirm(
-          "Delete this article?"
+          "Delete this stay?"
         );
 
       if (!confirmed) {
@@ -161,11 +157,11 @@ export default function AdminBlogsPage() {
       }
 
       await supabaseClient
-        .from("blog_posts")
+        .from("stays")
         .delete()
         .eq("id", id);
 
-      fetchBlogs();
+      fetchStays();
     };
 
   return (
@@ -186,7 +182,7 @@ export default function AdminBlogsPage() {
               </p>
 
               <h1 className="text-5xl leading-none text-[#222222]">
-                Manage Journal
+                Manage Stays
               </h1>
 
             </div>
@@ -199,7 +195,7 @@ export default function AdminBlogsPage() {
               <input
                 type="text"
                 name="title"
-                placeholder="Article title"
+                placeholder="Stay title"
                 value={form.title}
                 onChange={handleChange}
                 required
@@ -209,17 +205,57 @@ export default function AdminBlogsPage() {
               <input
                 type="text"
                 name="slug"
-                placeholder="article-slug"
+                placeholder="stay-slug"
                 value={form.slug}
                 onChange={handleChange}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
               />
 
+              <input
+                type="text"
+                name="tagline"
+                placeholder="Short tagline"
+                value={form.tagline}
+                onChange={handleChange}
+                required
+                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
+              />
+
               <textarea
-                name="excerpt"
-                placeholder="Short excerpt"
-                value={form.excerpt}
+                name="description"
+                placeholder="Stay description"
+                value={form.description}
+                onChange={handleChange}
+                rows={5}
+                required
+                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
+              />
+
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                value={form.location}
+                onChange={handleChange}
+                required
+                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
+              />
+
+              <input
+                type="text"
+                name="category"
+                placeholder="Category"
+                value={form.category}
+                onChange={handleChange}
+                required
+                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
+              />
+
+              <textarea
+                name="amenities"
+                placeholder="Amenities"
+                value={form.amenities}
                 onChange={handleChange}
                 rows={4}
                 required
@@ -228,9 +264,9 @@ export default function AdminBlogsPage() {
 
               <input
                 type="text"
-                name="cover_image"
-                placeholder="Cloudinary public ID"
-                value={form.cover_image}
+                name="starting_price"
+                placeholder="Starting price"
+                value={form.starting_price}
                 onChange={handleChange}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
@@ -258,22 +294,12 @@ export default function AdminBlogsPage() {
 
               <input
                 type="text"
-                name="keywords"
-                placeholder="keyword1, keyword2"
-                value={form.keywords}
+                name="image"
+                placeholder="Cloudinary public ID"
+                value={form.image}
                 onChange={handleChange}
                 required
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none"
-              />
-
-              <textarea
-                name="content"
-                placeholder="Blog content"
-                value={form.content}
-                onChange={handleChange}
-                rows={18}
-                required
-                className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
               />
 
               <div className="flex flex-wrap gap-4">
@@ -284,12 +310,10 @@ export default function AdminBlogsPage() {
                   className="bg-[#1F3A32] text-white rounded-full px-8 py-4 hover:opacity-90 transition disabled:opacity-50"
                 >
                   {loading
-                    ? editingId
-                      ? "Updating..."
-                      : "Publishing..."
+                    ? "Saving..."
                     : editingId
-                    ? "Update Article"
-                    : "Publish Article"}
+                    ? "Update Stay"
+                    : "Create Stay"}
                 </button>
 
                 {editingId && (
@@ -308,24 +332,40 @@ export default function AdminBlogsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {blogs.map((blog) => (
+              {stays.map((stay) => (
                 <div
-                  key={blog.id}
+                  key={stay.id}
                   className="bg-white rounded-[2rem] p-8 luxury-shadow border border-black/5"
                 >
 
                   <div className="mb-6">
 
                     <h2 className="text-3xl mb-3 text-[#222222]">
-                      {blog.title}
+                      {stay.title}
                     </h2>
 
-                    <p className="text-[#222222]/70 mb-4 line-clamp-3">
-                      {blog.excerpt}
+                    <p className="text-[#222222]/70 mb-4">
+                      {stay.tagline}
                     </p>
 
+                    <div className="flex flex-wrap gap-3 text-sm text-black/40 mb-4">
+
+                      <span>
+                        {stay.location}
+                      </span>
+
+                      <span>
+                        •
+                      </span>
+
+                      <span>
+                        {stay.category}
+                      </span>
+
+                    </div>
+
                     <p className="text-sm text-black/40">
-                      /journal/{blog.slug}
+                      /stays/{stay.slug}
                     </p>
 
                   </div>
@@ -335,42 +375,42 @@ export default function AdminBlogsPage() {
                     <button
                       onClick={() => {
                         setEditingId(
-                          blog.id
+                          stay.id
                         );
 
                         setForm({
                           title:
-                            blog.title || "",
+                            stay.title || "",
 
                           slug:
-                            blog.slug || "",
+                            stay.slug || "",
 
-                          excerpt:
-                            blog.excerpt || "",
+                          tagline:
+                            stay.tagline || "",
 
-                          content:
-                            blog.content || "",
+                          description:
+                            stay.description || "",
 
-                          cover_image:
-                            blog.cover_image || "",
+                          image:
+                            stay.image || "",
+
+                          location:
+                            stay.location || "",
+
+                          category:
+                            stay.category || "",
+
+                          amenities:
+                            stay.amenities || "",
+
+                          starting_price:
+                            stay.starting_price || "",
 
                           seo_title:
-                            blog.seo_title || "",
+                            stay.seo_title || "",
 
                           seo_description:
-                            blog.seo_description || "",
-
-                          keywords:
-                            Array.isArray(
-                              blog.keywords
-                            )
-                              ? blog.keywords.join(
-                                  ", "
-                                )
-                              : "",
-
-                          published:
-                            blog.published,
+                            stay.seo_description || "",
                         });
 
                         window.scrollTo({
@@ -386,7 +426,9 @@ export default function AdminBlogsPage() {
 
                     <button
                       onClick={() =>
-                        deleteBlog(blog.id)
+                        deleteStay(
+                          stay.id
+                        )
                       }
                       className="bg-red-500 text-white px-5 py-2.5 rounded-full text-sm hover:opacity-90 transition"
                     >

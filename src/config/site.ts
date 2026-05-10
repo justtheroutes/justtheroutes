@@ -7,11 +7,11 @@ export const siteConfig = {
   url: "https://www.justtheroutes.com",
 
   contact: {
-    phonePrimary: "+91 8491939394",
+    phonePrimary: "+91 8492939394",
 
-    phoneSecondary: "+91 8492939394",
+    phoneSecondary: "+91 8491939394",
 
-    whatsapp: "918491939394",
+    whatsapp: "918492939394",
 
     email: "justtheroutes@gmail.com",
 
@@ -36,6 +36,21 @@ export const siteConfig = {
     {
       title: "Experiences",
       href: "/experiences",
+    },
+
+     {
+        title: "Stays",
+        href: "/stays",
+    },
+
+    {
+        title: "Cabs",
+        href: "/cabs",
+    },
+
+    {
+        title: "Heritage",
+        href: "/heritage-shop",
     },
 
     {

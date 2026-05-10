@@ -7,12 +7,12 @@ import Container from "@/components/layout/container";
 import CloudinaryImage from "@/components/ui/cloudinary-image";
 
 import {
-  getAllExperiences,
-} from "@/services/experience-service";
+  getAllProducts,
+} from "@/services/heritage-service";
 
-export default async function ExperiencesPage() {
-  const experiences =
-    await getAllExperiences();
+export default async function HeritageShopPage() {
+  const products =
+    await getAllProducts();
 
   return (
     <main className="bg-[#F8F7F3] min-h-screen">
@@ -26,40 +26,40 @@ export default async function ExperiencesPage() {
           <div className="max-w-4xl mb-20">
 
             <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-6">
-              Experiences
+              Kashmir Heritage
             </p>
 
             <h1 className="text-6xl md:text-8xl leading-none mb-8 text-[#222222]">
 
               Curated
               <br />
-              Kashmir Journeys
+              Kashmiri Collection
 
             </h1>
 
             <p className="text-xl text-[#222222]/70 leading-relaxed max-w-2xl">
 
-              Discover thoughtfully designed Kashmir experiences crafted around luxury, comfort, adventure, and meaningful travel.
+              Explore authentic Kashmiri craftsmanship, saffron, kahwa, pashmina, and timeless cultural treasures.
 
             </p>
 
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-            {experiences.map(
-              (item: any) => (
+            {products.map(
+              (product: any) => (
                 <Link
-                  key={item.id}
-                  href={`/experiences/${item.slug}`}
+                  key={product.id}
+                  href={`/heritage-shop/${product.slug}`}
                   className="group bg-white rounded-[2rem] overflow-hidden luxury-shadow block"
                 >
 
                   <div className="relative h-[320px] overflow-hidden">
 
                     <CloudinaryImage
-                      src={item.image}
-                      alt={item.title}
+                      src={product.image}
+                      alt={product.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -68,13 +68,27 @@ export default async function ExperiencesPage() {
 
                   <div className="p-8">
 
-                    <h2 className="text-3xl leading-tight mb-4 text-[#222222]">
-                      {item.title}
-                    </h2>
+                    <div className="flex items-center justify-between mb-4">
 
-                    <p className="text-[#222222]/70 leading-relaxed">
-                      {item.tagline}
+                      <h2 className="text-3xl text-[#222222]">
+                        {product.title}
+                      </h2>
+
+                      <span className="text-sm bg-[#1F3A32]/10 text-[#1F3A32] px-4 py-2 rounded-full">
+                        From {product.starting_price}
+                      </span>
+
+                    </div>
+
+                    <p className="text-[#222222]/70 leading-relaxed mb-6">
+                      {product.tagline}
                     </p>
+
+                    <div className="text-sm text-black/50">
+
+                      {product.category}
+
+                    </div>
 
                   </div>
 

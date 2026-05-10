@@ -27,17 +27,20 @@ type Props = {
 export default function Navbar({
   light,
 }: Props) {
-  const inquiryModal = useInquiryModal();
+  const inquiryModal =
+    useInquiryModal();
 
   const [scrolled, setScrolled] =
     useState(false);
 
-const [menuOpen, setMenuOpen] =
-  useState(false);
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(
+        window.scrollY > 40
+      );
     };
 
     window.addEventListener(
@@ -53,61 +56,73 @@ const [menuOpen, setMenuOpen] =
   }, []);
 
   const solidNavbar =
-  light || scrolled || menuOpen;
+    light ||
+    scrolled ||
+    menuOpen;
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed left-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "top-0"
+          : "top-[40px]"
+      } ${
         solidNavbar
-          ? "bg-[#F8F7F3]/80 backdrop-blur-2xl border-b border-black/5 shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
+          ? "bg-white/90 backdrop-blur-xl border-b border-black/5"
           : "bg-transparent"
       }`}
     >
 
       <Container>
 
-        <div className="flex items-center justify-between h-28">
+        <div className="flex items-center justify-between h-24">
 
           <Link
             href="/"
-            className={`text-3xl tracking-tight transition ${
+            className={`transition ${
               solidNavbar
                 ? "text-[#111111]"
                 : "text-white"
             }`}
           >
+
             <div className="leading-none">
 
-            <div>
+              <div className="text-[28px] font-medium tracking-tight">
                 JustTheRoutes
-            </div>
+              </div>
 
-            <div className="text-[10px] tracking-[0.35em] mt-2 opacity-60 uppercase">
+              <div className="text-[10px] tracking-[0.35em] mt-2 opacity-60 uppercase">
                 Kashmir
-            </div>
+              </div>
 
             </div>
+
           </Link>
 
-          <nav className="hidden md:flex items-center gap-14">
+          {/* DESKTOP NAV */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
 
-            {siteConfig.navigation.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className={`text-[15px] tracking-wide transition duration-300 hover:opacity-60 ${
-                  solidNavbar
-                    ? "text-[#222222]/70 hover:text-[#111111]"
-                    : "text-white/80 hover:text-white"
-                }`}
-              >
-                {item.title}
-              </Link>
-            ))}
+            {siteConfig.navigation.map(
+              (item) => (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className={`text-[15px] tracking-wide transition duration-300 hover:opacity-60 whitespace-nowrap ${
+                    solidNavbar
+                      ? "text-[#222222]/75 hover:text-[#111111]"
+                      : "text-white/85 hover:text-white"
+                  }`}
+                >
+                  {item.title}
+                </Link>
+              )
+            )}
 
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* DESKTOP CTA */}
+          <div className="hidden lg:flex items-center gap-5">
 
             <Link
               href="/login"
@@ -121,93 +136,101 @@ const [menuOpen, setMenuOpen] =
             </Link>
 
             <Button
-              onClick={inquiryModal.onOpen}
+              onClick={
+                inquiryModal.onOpen
+              }
             >
               Plan Your Journey
             </Button>
 
           </div>
 
-        {/* MOBILE MENU BUTTON */}
-<button
-  onClick={() =>
-    setMenuOpen(!menuOpen)
-  }
-  className={`md:hidden transition ${
-    solidNavbar
-      ? "text-[#111111]"
-      : "text-white"
-  }`}
->
-
-  {menuOpen ? (
-    <X size={30} />
-  ) : (
-    <Menu size={30} />
-  )}
-
-</button>
-
-</div>
-
-</Container>
-
-{/* MOBILE MENU */}
-{menuOpen && (
-  <div className="md:hidden bg-[#F8F7F3]/98 backdrop-blur-2xl border-t border-black/5 min-h-screen">
-
-    <Container>
-
-      <div className="flex flex-col py-10">
-
-        {siteConfig.navigation.map(
-          (item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              onClick={() =>
-                setMenuOpen(false)
-              }
-              className="py-7 text-4xl tracking-tight text-[#1F3A32] border-b border-black/5"
-            >
-              {item.title}
-            </Link>
-          )
-        )}
-
-        <Link
-          href="/login"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-          className="py-7 text-4xl tracking-tight text-[#1F3A32] border-b border-black/5"
-        >
-          Login
-        </Link>
-
-        <div className="pt-10">
-
-          <Button
-            size="lg"
-            className="w-full text-lg py-6"
-            onClick={() => {
-              inquiryModal.onOpen();
-
-              setMenuOpen(false);
-            }}
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() =>
+              setMenuOpen(
+                !menuOpen
+              )
+            }
+            className={`lg:hidden transition ${
+              solidNavbar
+                ? "text-[#111111]"
+                : "text-white"
+            }`}
           >
-            Plan Your Journey
-          </Button>
+
+            {menuOpen ? (
+              <X size={30} />
+            ) : (
+              <Menu size={30} />
+            )}
+
+          </button>
 
         </div>
 
-      </div>
+      </Container>
 
-    </Container>
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div className="lg:hidden bg-[#F8F7F3]/98 backdrop-blur-2xl border-t border-black/5 min-h-screen">
 
-  </div>
-)}
+          <Container>
 
-</header>
+            <div className="flex flex-col py-8">
+
+              {siteConfig.navigation.map(
+                (item) => (
+                  <Link
+                    key={item.title}
+                    href={item.href}
+                    onClick={() =>
+                      setMenuOpen(
+                        false
+                      )
+                    }
+                    className="py-6 text-3xl tracking-tight text-[#1F3A32] border-b border-black/5"
+                  >
+                    {item.title}
+                  </Link>
+                )
+              )}
+
+              <Link
+                href="/login"
+                onClick={() =>
+                  setMenuOpen(false)
+                }
+                className="py-6 text-3xl tracking-tight text-[#1F3A32] border-b border-black/5"
+              >
+                Login
+              </Link>
+
+              <div className="pt-8">
+
+                <Button
+                  size="lg"
+                  className="w-full text-lg py-6"
+                  onClick={() => {
+                    inquiryModal.onOpen();
+
+                    setMenuOpen(
+                      false
+                    );
+                  }}
+                >
+                  Plan Your Journey
+                </Button>
+
+              </div>
+
+            </div>
+
+          </Container>
+
+        </div>
+      )}
+
+    </header>
   );
 }

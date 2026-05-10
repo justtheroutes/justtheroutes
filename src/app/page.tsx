@@ -7,6 +7,8 @@ import WhyUs from "@/components/sections/why-us";
 import Testimonials from "@/components/sections/testimonials";
 import InstagramSection from "@/components/sections/instagram-section";
 import CtaBanner from "@/components/sections/cta-banner";
+import MarqueeStrip from "@/components/sections/marquee-strip";
+import CinematicVideo from "@/components/sections/cinematic-video";
 
 
 export default function HomePage() {
@@ -14,9 +16,11 @@ export default function HomePage() {
     <main>
       <Navbar />
       <Hero />
-      <TrustStrip />
+      <MarqueeStrip />
       <FeaturedExperiences />
+      <TrustStrip />
       <WhyUs />
+      <CinematicVideo />
       <Testimonials />
       <InstagramSection />
       <CtaBanner />

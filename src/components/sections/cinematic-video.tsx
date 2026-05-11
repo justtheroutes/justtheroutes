@@ -7,12 +7,14 @@ export default function CinematicVideo() {
         muted
         loop
         playsInline
+        preload="auto"
+        poster="https://res.cloudinary.com/dqdvlpsi7/image/upload/v1778524633/justtheroutes/hero/hero-kashmir.jpg"
         className="absolute inset-0 w-full h-full object-cover"
-      >
-
+        >
+            
         <source
-          src="/videos/kashmir-cinematic.mp4"
-          type="video/mp4"
+        src="https://res.cloudinary.com/dqdvlpsi7/video/upload/v1778530745/justtheroutes/hero/kashmir-cinematic.mp4"
+        type="video/mp4"
         />
 
       </video>

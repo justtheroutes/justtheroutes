@@ -11,6 +11,8 @@ import AdminNavbar from "@/components/dashboard/admin-navbar";
 
 import { supabaseClient } from "@/lib/supabase-client";
 
+import Link from "next/link";
+
 type Inquiry = {
   id: string;
 
@@ -251,7 +253,12 @@ export default function AdminPage() {
                     </td>
 
                     <td className="px-6 py-5 whitespace-nowrap">
-                      {item.name}
+                    <Link
+                        href={`/admin/inquiries/${item.id}`}
+                        className="text-[#1F3A32] hover:underline font-medium"
+                    >
+                        {item.name}
+                    </Link>
                     </td>
 
                     <td className="px-6 py-5 whitespace-nowrap">

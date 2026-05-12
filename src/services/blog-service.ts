@@ -41,7 +41,7 @@ export async function getBlogBySlug(
 export async function getAllBlogs() {
   const { data, error } =
     await supabaseClient
-      .from("blogs")
+      .from("blog_posts")
       .select("*")
       .order("created_at", {
         ascending: false,

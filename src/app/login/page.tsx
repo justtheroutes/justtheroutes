@@ -50,13 +50,40 @@ export default function LoginPage() {
           }
         );
 
-      if (error) {
+        if (error) {
+
         alert(error.message);
 
         return;
-      }
 
-      router.push("/admin");
+        }
+
+        const {
+        data: { user },
+        } =
+        await supabaseClient.auth.getUser();
+
+        if (
+        user?.email !==
+        "justtheroutes@gmail.com"
+        ) {
+
+        alert(
+            "Unauthorized access"
+        );
+
+        await supabaseClient.auth.signOut();
+
+        return;
+
+        }
+
+        document.cookie =
+        `admin-email=${user.email}; path=/`;
+
+        router.push("/admin");
+
+        router.refresh();
 
       router.refresh();
     } catch (error) {
@@ -126,19 +153,6 @@ export default function LoginPage() {
 
           <div className="flex items-center justify-between text-sm">
 
-            <Link
-              href="/forgot-password"
-              className="text-[#1F3A32]"
-            >
-              Forgot Password?
-            </Link>
-
-            <Link
-              href="/signup"
-              className="text-[#1F3A32]"
-            >
-              Create Account
-            </Link>
 
           </div>
 

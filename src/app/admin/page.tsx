@@ -66,23 +66,54 @@ export default function AdminPage() {
     fetchInquiries();
   };
 
-  const fetchInquiries = async () => {
-    const { data, error } =
-      await supabaseClient
-        .from("inquiries")
-        .select("*")
-        .order("created_at", {
-          ascending: false,
-        });
+const fetchInquiries =
+  async () => {
 
-    if (error) {
-      alert(error.message);
+    try {
+
+      const {
+        data,
+        error,
+      } =
+        await supabaseClient
+          .from("inquiries")
+          .select("*")
+          .order(
+            "created_at",
+            {
+              ascending: false,
+            }
+          );
+
+      if (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+        return;
+
+      }
+
+      setInquiries(
+        data || []
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Failed to load dashboard."
+      );
+
+    } finally {
+
+      setLoading(false);
+
     }
 
-    setInquiries(data || []);
-
-    setLoading(false);
-  };
+};
 
   const updateStatus =
     async (
@@ -99,12 +130,7 @@ export default function AdminPage() {
       fetchInquiries();
     };
 
-  const handleLogout =
-    async () => {
-      await supabaseClient.auth.signOut();
 
-      router.push("/login");
-    };
 
   const filteredInquiries =
     filter === "All"
@@ -180,12 +206,6 @@ export default function AdminPage() {
               </button>
             ))}
 
-            <button
-              onClick={handleLogout}
-              className="bg-black text-white px-5 py-2.5 rounded-full text-sm"
-            >
-              Logout
-            </button>
 
           </div>
 

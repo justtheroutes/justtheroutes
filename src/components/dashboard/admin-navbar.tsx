@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { useRouter } from "next/navigation";
+
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -40,15 +42,26 @@ const links = [
     href: "/admin/heritage-shop",
   },
 
-  {
-    title: "Website",
-    href: "/",
-  },
 ];
 
 export default function AdminNavbar() {
   const pathname =
-    usePathname();
+  usePathname();
+
+const router =
+  useRouter();
+
+  const handleLogout =
+  async () => {
+
+    document.cookie =
+      "admin-email=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+    router.push("/");
+
+    router.refresh();
+
+};
 
   return (
     <div className="bg-white/95 backdrop-blur-xl border-b border-black/5 sticky top-0 z-50">
@@ -91,6 +104,13 @@ export default function AdminNavbar() {
             </div>
 
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="text-sm whitespace-nowrap px-5 py-2 rounded-full bg-black text-white hover:opacity-80 transition"
+            >
+            Logout
+            </button>
 
         </div>
 

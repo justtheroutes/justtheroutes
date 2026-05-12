@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import { notFound } from "next/navigation";
 
 import Navbar from "@/components/layout/navbar";
@@ -19,7 +21,52 @@ type Props = {
   }>;
 };
 
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+
+  const { slug } =
+    await params;
+
+  const experience =
+    await getExperienceBySlug(
+      slug
+    );
+
+  if (!experience) {
+    return {};
+  }
+
+  return {
+
+    title:
+      `${experience.title} | JustTheRoutes`,
+
+    description:
+      experience.description?.slice(
+        0,
+        160
+      ),
+
+    openGraph: {
+
+      title:
+        experience.title,
+
+      description:
+        experience.tagline,
+
+      images: [
+        experience.image,
+      ],
+
+    },
+
+  };
+}
+
 export async function generateStaticParams() {
+
   const experiences =
     await getAllExperiences();
 

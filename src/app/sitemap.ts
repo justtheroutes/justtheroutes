@@ -8,6 +8,14 @@ import {
   getAllBlogs,
 } from "@/services/blog-service";
 
+import {
+  getAllExperiences,
+} from "@/services/experience-service";
+
+import {
+  getAllProducts,
+} from "@/services/heritage-service";
+
 export default async function sitemap():
 Promise<MetadataRoute.Sitemap> {
   const baseUrl =
@@ -19,12 +27,22 @@ Promise<MetadataRoute.Sitemap> {
   const blogs =
     await getAllBlogs();
 
+    const experiences =
+  await getAllExperiences();
+
+const products =
+  await getAllProducts();
+
   const staticRoutes = [
     "",
     "/about",
     "/contact",
     "/destinations",
     "/journal",
+    "/cabs",
+    "/experiences",
+    "/heritage-shop",
+    "/stays",
   ];
 
   const staticPages =
@@ -74,11 +92,49 @@ Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
+    const experiencePages =
+  experiences.map(
+    (experience: any) => ({
+      url:
+        `${baseUrl}/experiences/${experience.slug}`,
+
+      lastModified:
+        new Date(),
+
+      changeFrequency:
+        "weekly" as const,
+
+      priority: 0.8,
+    })
+  );
+
+  const heritagePages =
+  products.map(
+    (product: any) => ({
+      url:
+        `${baseUrl}/heritage-shop/${product.slug}`,
+
+      lastModified:
+        new Date(),
+
+      changeFrequency:
+        "weekly" as const,
+
+      priority: 0.8,
+    })
+  );
+
   return [
-    ...staticPages,
 
-    ...destinationPages,
+  ...staticPages,
 
-    ...blogPages,
-  ];
+  ...destinationPages,
+
+  ...blogPages,
+
+  ...experiencePages,
+
+  ...heritagePages,
+
+];
 }

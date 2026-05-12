@@ -83,6 +83,13 @@ export default function Footer() {
             Built in Kashmir.
           </p>
 
+          <Link
+            href="/login"
+            className="text-sm text-white/40 hover:text-white transition"
+            >
+            Partner Login
+            </Link>
+
         </div>
 
       </Container>

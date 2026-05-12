@@ -124,17 +124,6 @@ export default function Navbar({
           {/* DESKTOP CTA */}
           <div className="hidden lg:flex items-center gap-5">
 
-            <Link
-              href="/login"
-              className={`text-sm transition ${
-                solidNavbar
-                  ? "text-[#222222]/70 hover:text-[#111111]"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              Login
-            </Link>
-
             <Button
               onClick={
                 inquiryModal.onOpen
@@ -196,15 +185,7 @@ export default function Navbar({
                 )
               )}
 
-              <Link
-                href="/login"
-                onClick={() =>
-                  setMenuOpen(false)
-                }
-                className="py-6 text-3xl tracking-tight text-[#1F3A32] border-b border-black/5"
-              >
-                Login
-              </Link>
+    
 
               <div className="pt-8">
 

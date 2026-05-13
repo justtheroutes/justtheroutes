@@ -4,10 +4,77 @@ import Navbar from "@/components/layout/navbar";
 import Container from "@/components/layout/container";
 
 import CloudinaryImage from "@/components/ui/cloudinary-image";
+import FAQSection from "@/components/sections/faq-section";
 
 import {
   getFeaturedDestinations,
 } from "@/services/destination-service";
+
+const faqs = [
+  {
+    question:
+      "Is Kashmir safe for tourists right now?",
+
+    answer:
+      "Yes. Tourist areas across Kashmir remain active, welcoming and carefully monitored for visitor safety. At JustTheRoutes, we stay closely connected locally and curate routes, stays and experiences with comfort and safety as a priority.",
+  },
+
+  {
+    question:
+      "What is the best time to visit Kashmir?",
+
+    answer:
+      "Kashmir transforms beautifully across every season — spring for tulips, summer for pleasant weather, autumn for golden landscapes and winter for snowfall experiences in Gulmarg and Sonmarg.",
+  },
+
+  {
+    question:
+      "How many days are enough for a Kashmir trip?",
+
+    answer:
+      "A 5 to 7 day itinerary is ideal to comfortably experience Srinagar, Gulmarg, Pahalgam and Sonmarg without rushing through the journey.",
+  },
+
+  {
+    question:
+      "Do you provide customised Kashmir tour packages?",
+
+    answer:
+      "Yes. Every itinerary can be personalised around your travel style, preferred hotels, honeymoon plans, family travel, luxury stays or adventure experiences.",
+  },
+
+  {
+    question:
+      "Is Kashmir good for honeymoon trips?",
+
+    answer:
+      "Kashmir remains one of India’s most romantic destinations with luxury stays, private Shikara experiences, mountain retreats and scenic escapes ideal for couples.",
+  },
+
+  {
+    question:
+      "Do I need a local travel operator in Kashmir?",
+
+    answer:
+      "A local travel operator helps significantly in Kashmir through better route planning, reliable transportation, local coordination and real-time weather or travel guidance.",
+  },
+
+  {
+    question:
+      "Are flights to Srinagar available throughout the year?",
+
+    answer:
+      "Yes. Srinagar is well connected with regular flights from Delhi, Mumbai, Bangalore, Hyderabad and other major Indian cities throughout the year.",
+  },
+
+  {
+    question:
+      "What kind of hotels do you offer in Kashmir packages?",
+
+    answer:
+      "We offer premium houseboats, boutique stays, luxury resorts and comfortable family-friendly hotels across major destinations in Kashmir.",
+  },
+];
 
 export default async function DestinationsPage() {
   const destinations =
@@ -81,6 +148,10 @@ export default async function DestinationsPage() {
           </div>
 
         </Container>
+
+        <FAQSection
+          faqs={faqs}
+        />
 
       </section>
 

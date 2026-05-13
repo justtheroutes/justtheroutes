@@ -30,6 +30,7 @@ export default function AdminDestinationsPage() {
       how_to_reach: "",
       highlights: "",
       seo_description: "",
+      faqs: "",
     });
 
   const fetchDestinations =
@@ -75,6 +76,7 @@ export default function AdminDestinationsPage() {
       how_to_reach: "",
       highlights: "",
       seo_description: "",
+      faqs: "",
     });
 
     setEditingId(null);
@@ -90,11 +92,20 @@ export default function AdminDestinationsPage() {
 
       let error = null;
 
+      const payload = {
+        ...form,
+
+        faqs:
+          form.faqs
+            ? JSON.parse(form.faqs)
+            : [],
+      };
+
       if (editingId) {
         const response =
           await supabaseClient
             .from("destinations")
-            .update(form)
+            .update(payload)
             .eq("id", editingId);
 
         error = response.error;
@@ -104,7 +115,7 @@ export default function AdminDestinationsPage() {
           await supabaseClient
             .from("destinations")
             .insert({
-              ...form,
+              ...payload,
               featured: true,
             });
 
@@ -276,6 +287,15 @@ export default function AdminDestinationsPage() {
                 className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none"
               />
 
+              <textarea
+              name="faqs"
+              placeholder='[{"question":"...","answer":"..."}]'
+              value={form.faqs}
+              onChange={handleChange}
+              rows={12}
+              className="w-full border border-black/10 rounded-xl px-5 py-4 outline-none resize-none font-mono text-sm"
+            />
+
               <input
                 type="text"
                 name="image"
@@ -379,6 +399,13 @@ export default function AdminDestinationsPage() {
 
                             seo_description:
                               destination.seo_description || "",
+
+                            faqs:
+                            JSON.stringify(
+                              destination.faqs || [],
+                              null,
+                              2
+                            ),
                           });
 
                           window.scrollTo({

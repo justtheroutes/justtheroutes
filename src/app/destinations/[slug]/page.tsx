@@ -6,6 +6,7 @@ import Container from "@/components/layout/container";
 
 import CloudinaryImage from "@/components/ui/cloudinary-image";
 import DestinationCTA from "@/components/ui/destination-cta";
+import FAQSection from "@/components/sections/faq-section";
 
 import {
   getDestinationBySlug,
@@ -218,6 +219,10 @@ export default async function DestinationPage({
   </Container>
 
 </section>
+
+<FAQSection
+  faqs={destination.faqs}
+/>
 
 {/* RELATED DESTINATIONS */}
 <section className="py-24 bg-white">

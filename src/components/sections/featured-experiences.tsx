@@ -20,18 +20,16 @@ export default async function FeaturedExperiences() {
 
         <div className="max-w-4xl mb-14">
 
-          <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-6">
-            Destinations
-          </p>
-
           <h2 className="text-5xl md:text-7xl leading-none mb-8 text-[#222222]">
-            Curated Across
-            <br />
-            Kashmir
+            Destinations 
           </h2>
 
+          <p className="uppercase tracking-[0.3em] text-sm text-[#1F3A32]/70 mb-6">
+            Curated Across Kashmir
+          </p>
+
           <p className="text-xl text-[#222222]/70 leading-relaxed max-w-2xl">
-            Explore destinations designed around authentic experiences,
+            Explore destinations designed around authentic experiences, 
             thoughtful pacing, and meaningful journeys.
           </p>
 

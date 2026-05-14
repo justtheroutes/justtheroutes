@@ -1,82 +1,228 @@
 import Link from "next/link";
 
-import Container from "./container";
+import {
+  FaInstagram,
+  FaWhatsapp,
+} from "react-icons/fa";
 
-import { siteConfig } from "@/config/site";
+import Container from "./container";
+import CloudinaryImage from "../ui/cloudinary-image";
 
 export default function Footer() {
+
   return (
-    <footer className="bg-[#111111] text-white pt-20 pb-10">
+
+    <footer className="relative bg-[#0B1814] text-white overflow-hidden">
+
+      {/* BACKGROUND GLOW */}
+
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full border border-white" />
+
+      </div>
 
       <Container>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 pb-16 border-b border-white/10">
+        {/* MAIN FOOTER */}
 
-          <div className="md:col-span-2">
+        <div className="pt-20 pb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr] gap-16">
 
-            <h2 className="text-4xl mb-6">
-              JustTheRoutes
-            </h2>
+          {/* BRAND */}
 
-            <p className="text-white/70 leading-relaxed max-w-md">
-              Curated journeys through Kashmir designed with care,
-              local expertise, and meaningful travel experiences.
+          <div>
+
+            <div className="mb-6">
+
+            <CloudinaryImage
+            src="justtheroutes/hero/footer"
+            alt="JustTheRoutes"
+            width={150}
+            height={150}
+            className="w-auto h-auto object-contain mb-6 opacity-95"
+          />
+
+          </div>
+
+            <p className="text-white/60 leading-loose mb-8">
+
+              Curated Kashmir journeys, premium stays and deeply local travel experiences crafted with care.
             </p>
 
           </div>
 
-          <div>
+          {/* EXPLORE */}
 
-            <h3 className="text-lg mb-6">
-              Navigation
+          <div className="lg:pl-10">
+
+            <h3 className="text-lg uppercase tracking-[0.25em] text-white/40 mb-8">
+              Explore
             </h3>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
 
-              {siteConfig.navigation.map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.href}
-                  className="block text-white/70 hover:text-white transition"
-                >
-                  {item.title}
-                </Link>
-              ))}
+              <Link
+                href="/destinations"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Destinations
+              </Link>
+
+              <Link
+                href="/experiences"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Experiences
+              </Link>
+
+              <Link
+                href="/stays"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Stays
+              </Link>
+
+              <Link
+                href="/heritage-shop"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Heritage Shop
+              </Link>
+
+              <Link
+                href="/journal"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Journal
+              </Link>
 
             </div>
 
           </div>
 
+          {/* DESTINATIONS */}
+
           <div>
 
-            <h3 className="text-lg mb-6">
-              Contact
+            <h3 className="text-lg uppercase tracking-[0.25em] text-white/40 mb-8">
+              Popular Destinations
             </h3>
 
-            <div className="space-y-4 text-white/70">
+            <div className="space-y-5">
 
-              <p>
-                {siteConfig.contact.phonePrimary}
-              </p>
+              <Link
+                href="/destinations/srinagar"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Srinagar
+              </Link>
 
-              <p>
-                {siteConfig.contact.email}
-              </p>
+              <Link
+                href="/destinations/gulmarg"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Gulmarg
+              </Link>
 
-              <p className="leading-relaxed">
-                {siteConfig.contact.address}
-              </p>
+              <Link
+                href="/destinations/pahalgam"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Pahalgam
+              </Link>
+
+              <Link
+                href="/destinations/sonmarg"
+                className="block text-white/65 hover:text-white transition"
+              >
+                Sonmarg
+              </Link>
 
             </div>
 
+          </div>
+
+          {/* CONTACT */}
+
+          <div>
+
+            <h3 className="text-lg uppercase tracking-[0.25em] text-white/40 mb-8">
+              Contact
+            </h3>
+
+            <div className="space-y-5">
+
+  <a
+    href="tel:+918492939394"
+    className="flex items-center gap-3 text-white/65 hover:text-white transition-all duration-300"
+  >
+    <span>
+      +91 8492939394
+    </span>
+  </a>
+
+  <a
+    href="mailto:justtheroutes@gmail.com"
+    className="flex items-center gap-3 text-white/65 hover:text-white transition-all duration-300"
+  >
+    <span>
+      justtheroutes@gmail.com
+    </span>
+  </a>
+
+  <a
+    href="https://maps.google.com"
+    target="_blank"
+    className="block leading-loose text-white/65 hover:text-white transition-all duration-300"
+  >
+    Srinagar,
+    Kashmir,
+    India
+  </a>
+
+  <div className="flex flex-col gap-4 pt-3">
+
+    <Link
+      href="https://instagram.com/justtheroutes"
+      target="_blank"
+      className="flex items-center gap-3 text-white/65 hover:text-white transition-all duration-300"
+    >
+
+      <FaInstagram size={16} />
+
+      <span>
+        Instagram
+      </span>
+
+    </Link>
+
+    <Link
+      href="https://wa.me/918492939394"
+      target="_blank"
+      className="flex items-center gap-3 text-white/65 hover:text-white transition-all duration-300"
+    >
+
+      <FaWhatsapp size={16} />
+
+      <span>
+        WhatsApp
+      </span>
+
+    </Link>
+
+  </div>
+
+</div>
           </div>
 
         </div>
 
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
+        {/* BOTTOM */}
+
+        <div className="py-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-5 text-sm text-white/35">
 
           <p>
-            © 2026 JustTheRoutes. All rights reserved.
+            © 2023 JustTheRoutes. All rights reserved.
           </p>
 
           <p>
@@ -85,15 +231,16 @@ export default function Footer() {
 
           <Link
             href="/login"
-            className="text-sm text-white/40 hover:text-white transition"
-            >
+            className="hover:text-white transition"
+          >
             Partner Login
-            </Link>
+          </Link>
 
         </div>
 
       </Container>
 
     </footer>
+
   );
 }

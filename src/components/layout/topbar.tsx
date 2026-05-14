@@ -2,53 +2,91 @@
 
 import Link from "next/link";
 
+import {
+  Mail,
+  Phone,
+} from "lucide-react";
+
+import {
+  FaWhatsapp,
+  FaInstagram,
+} from "react-icons/fa";
+
+import Container from "./container";
+
 export default function Topbar() {
+
   return (
-    <div className="bg-[#16352D] text-white overflow-hidden border-b border-white/10 h-[40px] flex items-center">
 
-      <div className="marquee whitespace-nowrap text-sm tracking-wide">
+    <div className="bg-[#102821] text-white border-b border-white/10 h-[40px] hidden md:flex items-center">
 
-        <div className="marquee-content flex items-center gap-16">
+      <Container>
 
-          <Link
-            href="tel:+918492939394"
-            className="hover:text-[#C8A96B] transition"
-          >
-            Call Us: +91 8492939394
-          </Link>
+        <div className="flex items-center justify-between text-[13px]">
 
-          <Link
-            href="https://wa.me/918492939394"
-            target="_blank"
-            className="hover:text-[#C8A96B] transition"
-          >
-            WhatsApp Support
-          </Link>
+          {/* LEFT */}
 
-          <Link
-            href="https://instagram.com/justtheroutes"
-            target="_blank"
-            className="hover:text-[#C8A96B] transition"
-          >
-            Instagram @justtheroutes
-          </Link>
+          <div className="flex items-center gap-6">
 
-          <span>
-            Luxury Kashmir Experiences
-          </span>
+            <Link
+              href="tel:+918492939394"
+              className="flex items-center gap-2 text-white/70 hover:text-white transition-all duration-300"
+            >
 
-          <span>
-            Curated Houseboats & Stays
-          </span>
+              <Phone size={13} />
 
-          <span>
-            Chauffeur Driven Cabs
-          </span>
+              <span>
+                +91 8492939394
+              </span>
+
+            </Link>
+
+            <Link
+              href="mailto:justtheroutes@gmail.com"
+              className="flex items-center gap-2 text-white/70 hover:text-white transition-all duration-300"
+            >
+
+              <Mail size={13} />
+
+              <span>
+                justtheroutes@gmail.com
+              </span>
+
+            </Link>
+
+          </div>
+
+          {/* RIGHT */}
+
+          <div className="flex items-center gap-5">
+
+            <Link
+              href="https://instagram.com/justtheroutes"
+              target="_blank"
+              className="text-white/65 hover:text-white hover:-translate-y-[1px] transition-all duration-300"
+            >
+
+              <FaInstagram size={16} />
+
+            </Link>
+
+            <Link
+              href="https://wa.me/918492939394"
+              target="_blank"
+              className="text-white/65 hover:text-white hover:-translate-y-[1px] transition-all duration-300"
+            >
+
+              <FaWhatsapp size={16} />
+
+            </Link>
+
+          </div>
 
         </div>
 
-      </div>
+      </Container>
 
     </div>
+
   );
 }

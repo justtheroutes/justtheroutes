@@ -79,7 +79,7 @@ export default function Navbar({
 
           <Link
             href="/"
-            className={`transition ${
+            className={`transition-all duration-300 hover:opacity-90 hover:scale-[1.01] ${
               solidNavbar
                 ? "text-[#111111]"
                 : "text-white"
@@ -101,21 +101,35 @@ export default function Navbar({
           </Link>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 group">
 
             {siteConfig.navigation.map(
               (item) => (
                 <Link
-                  key={item.title}
-                  href={item.href}
-                  className={`text-[15px] tracking-wide transition duration-300 hover:opacity-60 whitespace-nowrap ${
-                    solidNavbar
-                      ? "text-[#222222]/75 hover:text-[#111111]"
-                      : "text-white/85 hover:text-white"
-                  }`}
-                >
+                key={item.title}
+                href={item.href}
+                className={`relative text-[15px] tracking-wide whitespace-nowrap transition-all duration-300 hover:-translate-y-[1px] ${
+                  solidNavbar
+                    ? "text-[#222222]/75 hover:text-[#111111]"
+                    : "text-white/85 hover:text-white"
+                }`}
+              >
+
+                <span className="relative">
+
                   {item.title}
-                </Link>
+
+                  <span
+                    className={`absolute left-0 -bottom-2 h-[1px] w-0 transition-all duration-300 group-hover:w-full ${
+                      solidNavbar
+                        ? "bg-[#111111]"
+                        : "bg-white"
+                    }`}
+                  />
+
+                </span>
+
+              </Link>
               )
             )}
 

@@ -1,61 +1,114 @@
 import Container from "../layout/container";
-import SectionTitle from "../ui/section-title";
 
 const features = [
   {
-    title: "Local Expertise",
+    stat: "Since 2016",
+    title: "Nearly A Decade Of Kashmir Expertise",
     description:
-      "Built from the heart of Kashmir with deep regional insight and trusted local connections.",
+      "Built from within Kashmir with years of on-ground travel planning and trusted local relationships.",
+    bg: "bg-[#1F3A32]",
+    text: "text-white",
+    muted: "text-white/65",
   },
 
   {
-    title: "Curated Experiences",
+    stat: "500+ Journeys",
+    title: "Curated Across Every Season",
     description:
-      "Every journey is thoughtfully designed for comfort, emotion, and unforgettable memories.",
+      "From luxury escapes and honeymoons to immersive family journeys and slow travel experiences.",
+    bg: "bg-[#F3EEE4]",
+    text: "text-[#222222]",
+    muted: "text-[#222222]/65",
   },
 
   {
-    title: "Personalized Planning",
+    stat: "Kashmir Based",
+    title: "Locally Rooted Operations",
     description:
-      "No generic itineraries. Every trip is tailored around your pace, interests, and travel style.",
+      "Direct local coordination, carefully selected stays and personalized on-ground assistance throughout your trip.",
+    bg: "bg-[#E7EFEA]",
+    text: "text-[#222222]",
+    muted: "text-[#222222]/65",
   },
 
   {
-    title: "Seamless Support",
+    stat: "Tailored Planning",
+    title: "No Generic Package Templates",
     description:
-      "From planning to return, our team stays connected throughout your journey.",
+      "Every itinerary is designed around your pace, preferences, season and travel style.",
+    bg: "bg-[#111111]",
+    text: "text-white",
+    muted: "text-white/65",
   },
 ];
 
 export default function WhyUs() {
+
   return (
-    <section className="section-padding bg-white">
+
+    <section className="py-32 bg-white overflow-hidden">
 
       <Container>
 
-        <SectionTitle
-          eyebrow="Why JustTheRoutes"
-          title="Travel Designed With Intention"
-          description="Blending local knowledge, refined hospitality, and immersive experiences to create journeys that feel effortless and memorable."
-        />
+        {/* INTRO */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex items-end justify-between mb-20 gap-10">
+
+  <div>
+
+    <h2 className="text-4xl md:text-6xl leading-tight text-[#222222]">
+
+      Why JustTheRoutes?
+
+    </h2>
+
+    <div className="w-24 h-[2px] bg-[#1F3A32] mt-8 rounded-full" />
+
+  </div>
+
+  <p className="hidden lg:block text-sm uppercase tracking-[0.35em] text-[#222222]/35 whitespace-nowrap">
+
+    Kashmir • Since 2016
+
+  </p>
+
+</div>
+
+        {/* FEATURE STRIP */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
           {features.map((item) => (
+
             <div
               key={item.title}
-              className="p-10 rounded-[2rem] border border-black/5 luxury-shadow bg-[#F8F7F3]"
+              className={`${item.bg} ${item.text} rounded-[2.5rem] p-10 min-h-[360px] flex flex-col justify-between transition-all duration-500 hover:-translate-y-[4px]`}
             >
 
-              <h3 className="text-2xl mb-4">
-                {item.title}
-              </h3>
+              <div>
 
-              <p className="text-[#222222]/70 leading-relaxed text-lg">
+                <p className="text-4xl md:text-5xl leading-none mb-10 font-medium tracking-tight">
+
+                  {item.stat}
+
+                </p>
+
+                <h3 className="text-2xl leading-tight mb-6">
+
+                  {item.title}
+
+                </h3>
+
+              </div>
+
+              <p className={`${item.muted} leading-loose text-[17px]`}>
+
                 {item.description}
+
               </p>
 
             </div>
+
           ))}
 
         </div>
@@ -63,5 +116,6 @@ export default function WhyUs() {
       </Container>
 
     </section>
+
   );
 }

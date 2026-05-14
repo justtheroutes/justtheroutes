@@ -42,9 +42,7 @@ export default function TestimonialsSection() {
           </p>
 
           <h2 className="text-5xl md:text-7xl leading-none mb-8">
-            Trusted By
-            <br />
-            Travelers
+            Trusted By Travelers
           </h2>
 
           <p className="text-xl text-white/70 leading-relaxed max-w-2xl">
